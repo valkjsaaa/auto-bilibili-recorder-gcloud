@@ -13,7 +13,7 @@ RUN add-apt-repository universe
 RUN apt-get update && apt-get install -y wget ffmpeg fonts-noto-color-emoji fonts-noto-cjk-extra cmake python3 python3-pip
 RUN update-ca-certificates -f
 
-RUN apt-get update && apt-get install -y libc6 libgcc1 libgssapi-krb5-2 libicu66 libssl1.1 libstdc++6 zlib1g
+RUN apt-get update && apt-get install -y libc6 libgcc1 libgssapi-krb5-2 libicu66 libssl1.1 libstdc++6 zlib1g curl gnupg
 
 RUN wget https://github.com/PowerShell/PowerShell/releases/download/v7.1.5/powershell-7.1.5-linux-arm64.tar.gz -O powershell.tar.gz
 RUN mkdir -p /opt/pwsh
@@ -45,7 +45,7 @@ RUN dotnet nuget locals all --clear
 RUN rm -rf /opt/pwsh
 RUN rm -rf /root/.dotnet
 
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-cli main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-cli -y
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | tee /usr/share/keyrings/cloud.google.gpg && apt-get update -y && apt-get install google-cloud-sdk -y
 
 #ENTRYPOINT BililiveRecorder/BililiveRecorder.Cli/bin/Release/netcoreapp3.1/BililiveRecorder.Cli
 

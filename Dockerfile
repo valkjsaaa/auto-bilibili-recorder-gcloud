@@ -47,17 +47,6 @@ RUN rm -rf /root/.dotnet
 
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | tee /usr/share/keyrings/cloud.google.gpg && apt-get update -y
 
-RUN pip install --no-cache-dir apache-beam[gcp]==2.29.0; exit 0
-
-# Copy the Apache Beam worker dependencies from the Beam Python 3.6 SDK image.
-COPY --from=apache/beam_python3.8_sdk:2.37.0 /opt/apache/beam /opt/apache/beam
-
-# Apache Beam worker expects pip at /usr/local/bin/pip by default.
-# Some images have pip in a different location. If necessary, make a symlink.
-# This can be omitted in Beam 2.30.0 and later versions.
-RUN [[ `which pip` == "/usr/local/bin/pip" ]] || ln -s `which pip` /usr/local/bin/pip
-
-
 RUN apt-get install google-cloud-sdk -y
 
 #ENTRYPOINT BililiveRecorder/BililiveRecorder.Cli/bin/Release/netcoreapp3.1/BililiveRecorder.Cli
